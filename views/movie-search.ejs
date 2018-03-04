@@ -1,0 +1,41 @@
+<%- include ./partials/header.ejs -%>
+<div>
+    <h1>Recherche sur movie database</h1>
+    <input type="text" name="term" id="term" placeholder="titre de film">
+    <button id="btnSearch">Rechercher</button>
+</div>
+
+<div id="results">
+
+</div>
+
+
+<%- include ./partials/footer.ejs -%>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const API_KEY = "1fbf4e0b423ae93517034e0481f834d4";
+    const term = document.querySelector('#term');
+    const btnSearch = document.querySelector('#btnSearch');
+    btnSearch.addEventListener('click', search);
+
+    let resultsDiv = document.querySelector('#results');
+
+    function search() {
+        const query = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${term.value}&language=fr-FR`;
+        axios.get(query)
+            .then(function(response) {
+                console.log(response);
+                displayResults(response.data.results);
+            });
+    }
+
+    function displayResults(results) {
+        resultsDiv.innerHTML = '';
+        for(let result of results) {
+            let movieDiv = document.createElement('div');
+            movieDiv.innerHTML = result.title;
+            resultsDiv.appendChild(movieDiv);
+        }
+    }
+</script>

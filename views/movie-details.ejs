@@ -1,0 +1,32 @@
+<%- include ./partials/header.ejs -%>
+
+<div>
+    <h1>Detail</h1>
+    <h3><%= movie.movietitle %> - <%= movie.movieyear %></h3>
+
+    <form action="/movie-details/<%= movie._id %>" method="post">
+        <legend>Modifier le film</legend>
+        <label for="movietitle">Titre du film</label>
+        <input type="text" name="movietitle" id="movietitle" value="<%= movie.movietitle %>">
+        <label for="movieyear">Année du film</label>
+        <input type="text" name="movieyear" id="movieyear" value="<%= movie.movieyear %>">
+        <button type="submit">Mettre à jour</button>
+    </form>
+    <button id="btnSuppr">Supprimer un film</button>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    let btnSuppr = document.getElementById('btnSuppr');
+    btnSuppr.addEventListener('click', deleteDocument);
+    function deleteDocument() {
+        let movieId = <%- JSON.stringify(movie._id)%>;
+        let url = '/movie-details/' + movieId;
+        axios.delete(url).then(function(response) {
+            window.location = '/movies';
+        }).catch(function(error) {
+            console.error(error);
+        });
+    }
+</script>
+<%- include ./partials/footer.ejs -%>
+
